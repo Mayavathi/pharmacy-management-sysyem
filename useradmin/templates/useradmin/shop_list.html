@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/useradmin.css' %}" rel="stylesheet">
+<style>
+.shop {
+margin-left: 40px;
+padding-left: 1em;
+border-top: 1px solid #eeeeee;
+}
+.shop a{
+text-decoration: none;
+background-color: transparent;
+}
+</style>
+
+{% endblock head %}
+{% block main %}
+<div class="page-header">
+    <h1>Admin Panel</h1>
+</div>
+<div class="row" style="margin-top: 2em">
+    <div class="col-md-3">
+        {% include 'useradmin/partial_admin_menu.html' with active='shop' %}
+    </div>
+    <div class="col-md-9">
+        <h3 style="margin-top: 0">Shop list</h3>
+        <section class="profiles">
+            {% for shop in shops %}
+            <div class="shop">
+                <h3>
+                    <address>
+                        <strong><a href="{% url 'profile' shop.user.username%}">{{shop.name}}</a></strong><br>
+                        {{shop.address.line1}}, {{shop.address.line2}}
+                        {{shop.address.city}}, {{shop.address.state}}
+                        {{shop.address.country}}, {{shop.address.pincode}}<br>
+                        <abbr title="Phone">P:</abbr> {{shop.address.contactno}}
+                    </address>
+                </h3>
+            </div>
+            {% endfor %}
+        </section>
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'paginator.html' with paginator=shops %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}
